@@ -311,6 +311,10 @@ func (c *Client) ResizeVMDisk(ctx context.Context, d *ResizeDiskRequestBody) err
 		func() error {
 			taskID, err := c.ResizeVMDiskAsync(ctx, d)
 			if err != nil {
+				if errors.Is(err, api.ErrNoDataObjectInResponse) {
+					return nil
+				}
+
 				return err
 			}
 
